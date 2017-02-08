@@ -21,7 +21,7 @@
 	],
 	"require": {
 		"php": ">=5.6",
-		"1stborn/corpus": "master",
+		"1stborn/corpus": "master"
 	},
 	"extra": {
 		"branch-alias": {
