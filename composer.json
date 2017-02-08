@@ -21,7 +21,9 @@
 	],
 	"require": {
 		"php": ">=5.6",
-		"1stborn/corpus": "master"
+		"1stborn/corpus": "master",
+		"guzzlehttp/guzzle": "^6.2",
+		"erusev/parsedown": "^1.6"
 	},
 	"extra": {
 		"branch-alias": {
