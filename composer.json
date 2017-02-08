@@ -1,0 +1,31 @@
+{
+	"name": "1stborn/ellipsis",
+	"minimum-stability": "stable",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "firstborn",
+			"email": "1stborm@gmail.com"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Ellipsis\\": "src"
+		}
+	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/1stborn/corpus"
+		}
+	],
+	"require": {
+		"php": ">=5.6",
+		"1stborn/corpus": "master",
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "1.x-dev"
+		}
+	}
+}
