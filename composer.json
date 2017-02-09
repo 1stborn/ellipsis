@@ -1,6 +1,6 @@
 {
 	"name": "1stborn/ellipsis",
-	"minimum-stability": "stable",
+	"minimum-stability": "dev",
 	"license": "MIT",
 	"authors": [
 		{
