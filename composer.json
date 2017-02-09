@@ -21,7 +21,7 @@
 	],
 	"require": {
 		"php": ">=5.6 || ^7.0",
-		"1stborn/corpus": "dev-master",
+		"1stborn/corpus": "master",
 		"guzzlehttp/guzzle": "^6.2",
 		"erusev/parsedown": "^1.6"
 	}
