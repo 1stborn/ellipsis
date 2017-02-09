@@ -1,6 +1,6 @@
 {
 	"name": "1stborn/ellipsis",
-	"minimum-stability": "dev",
+	"minimum-stability": "stable",
 	"license": "MIT",
 	"authors": [
 		{
@@ -21,13 +21,8 @@
 	],
 	"require": {
 		"php": ">=5.6 || ^7.0",
-		"1stborn/corpus": "master",
+		"1stborn/corpus": "dev-master",
 		"guzzlehttp/guzzle": "^6.2",
 		"erusev/parsedown": "^1.6"
 	},
-	"extra": {
-		"branch-alias": {
-			"dev-master": "master"
-		}
-	}
 }
