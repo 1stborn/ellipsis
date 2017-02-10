@@ -17,7 +17,7 @@ use GuzzleHttp\Client;
  */
 class App extends Base {
 	protected $language;
-	protected $view_root = "pages";
+	protected $view_root = "";
 
 	public static function run($silent = false, $options = []) {
 		return parent::run($silent, Config::merge([
