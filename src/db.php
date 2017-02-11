@@ -26,6 +26,6 @@ class DB {
 	}
 
 	public function query($query) {
-		return $this->query($query);
+		return $this->db->query($query);
 	}
 }
