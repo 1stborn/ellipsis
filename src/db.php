@@ -8,24 +8,11 @@ class DB {
 		$this->db = $db;
 	}
 
-	public function getScalar($query, $field = null, array $params = []) {
-		$result = $this->db->query($query);
-		if ( $result instanceof \mysqli_result && $result->num_rows > 0 ) {
-			if ( is_numeric($field) )
-				return $result->fetch_row()[$field];
-			else if ( !is_null($field) )
-				return $result->fetch_assoc()[$field];
-			else {
-				$row = $result->fetch_row();
-
-				return reset($row);
-			}
-		}
-
-		return null;
+	public function scalar($sql, ...$params) {
+		return $this->db->scalar($sql, $params);
 	}
 
-	public function query($query) {
-		return $this->db->query($query);
+	public function query($query, ...$params) {
+		return $this->db->query($query, $params);
 	}
 }
