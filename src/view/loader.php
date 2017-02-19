@@ -2,6 +2,8 @@
 namespace Ellipsis\View;
 
 use Ellipsis\Di;
+use Twig_Error_Loader;
+use Twig_Source;
 
 class Loader extends Di implements \Twig_LoaderInterface {
 	const FORMAT_PLAINTEXT = 'plaintext';
@@ -17,7 +19,7 @@ class Loader extends Di implements \Twig_LoaderInterface {
 	 * @throws Twig_Error_Loader When $name is not found
 	 */
 	public function getCacheKey($name) {
-		return $this->session->language . '/' . $name;
+		return $this->getName($name);
 	}
 
 	/**
@@ -32,7 +34,7 @@ class Loader extends Di implements \Twig_LoaderInterface {
 	 * @throws Twig_Error_Loader When $name is not found
 	 */
 	public function isFresh($name, $time) {
-		return $this->obtain('UNIX_TIMESTAMP(edited_at)', $name) < $time;
+		return $this->obtain('UNIX_TIMESTAMP(edited_at)', $this->getName($name)) < $time;
 	}
 
 	private function obtain($value, $name, $exec = 'scalar', $default = null) {
@@ -55,15 +57,17 @@ class Loader extends Di implements \Twig_LoaderInterface {
 	 * @throws Twig_Error_Loader When $name is not found
 	 */
 	public function getSourceContext($name) {
+		$name = $this->getName($name);
+
 		list($content, $format) = $this->obtain('content, format', $name, 'current', [null, null]);
 
 		switch ($format) {
 			case self::FORMAT_MARKDOWN:
-				return new \Twig_Source(( new \Parsedown )->text($content), $name);
+				return new Twig_Source(( new \Parsedown )->text($content), $name);
 			case self::FORMAT_PLAINTEXT:
-				return new \Twig_Source($content, $name);
+				return new Twig_Source($content, $name);
 			default:
-				throw new \Twig_Error_Loader("Unable to locate {$name}");
+				throw new Twig_Error_Loader("Unable to locate {$name}");
 		}
 	}
 
@@ -75,6 +79,10 @@ class Loader extends Di implements \Twig_LoaderInterface {
 	 * @return bool If the template source code is handled by this loader or not
 	 */
 	public function exists($name) {
-		return $this->obtain(1, $name);
+		return $this->obtain(1, $this->getName($name));
+	}
+
+	private function getName($name) {
+		return substr($name, -5) == '.twig' ? substr($name, 0, -5) : $name;
 	}
 }
