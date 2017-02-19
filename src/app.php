@@ -59,12 +59,4 @@ class App extends Base {
 			'request'    => $this->getRequest(),
 		]);
 	}
-
-	protected function getView($method = null) {
-		return parent::getView($method) ?: $this->getCustomView($method);
-	}
-
-	protected function getCustomView($method = null) {
-		return $this->view->find($method ?: $this->method);
-	}
 }
