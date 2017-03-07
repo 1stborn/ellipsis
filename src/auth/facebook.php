@@ -41,7 +41,7 @@ class Facebook {
 
 			$user = $auth->auth->setUserData(['picture' => $picture]);
 
-			file_put_contents(DOC_DIR . '/images/users/' . $picture, $image);
+			file_put_contents(Config::get('settings.public.images') . $picture, $image);
 		}
 
 		$current = $auth->db->current("
