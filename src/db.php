@@ -15,4 +15,8 @@ class DB {
 	public function query($query, ...$params) {
 		return $this->db->query($query, $params);
 	}
+
+	public function __call($name, $arguments) {
+		return $this->db->{$name}(...$arguments);
+	}
 }

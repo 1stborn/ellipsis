@@ -21,9 +21,6 @@ class App extends Base {
 
 	public static function run($silent = false, $options = []) {
 		return parent::run($silent, Config::merge([
-			'auth' => function ($ci) {
-				return new Auth($ci);
-			},
 			'http' => function () {
 				return new Client(Config::get('http'));
 			}
@@ -42,15 +39,9 @@ class App extends Base {
 			return Config::get($name);
 		}));
 
-		$this->view->addFilter(new \Twig_SimpleFilter('intl', function ($ctx, $text, array $args = []) {
-			static $phrases;
-
-			if ( !isset($phrases) )
-				$phrases = file_exists($file = APP_DIR . '/languages/' . $ctx['language'] . '.ini')
-					? parse_ini_file($file) : [];
-
-			return vsprintf(array_key_exists($key = md5($text), $phrases) ? $phrases[$key] : $text, $args);
-		}, ['needs_context' => true, 'is_variadic' => true]));
+		$this->view->addFilter(new \Twig_SimpleFilter('intl', function ($text, array $args = []) {
+			return call_user_func_array([$this, 'translate'], array_merge([$text], $args));
+		}, ['is_variadic' => true]));
 
 		$this->assign([
 			'language'   => $this->language,
@@ -58,5 +49,15 @@ class App extends Base {
 			'session'    => $this->session,
 			'request'    => $this->getRequest(),
 		]);
+	}
+
+	public function translate($text, ...$args) {
+		static $phrases;
+
+		if ( !isset($phrases) )
+			$phrases = file_exists($file = APP_DIR . '/languages/' . $this->language . '.ini')
+				? parse_ini_file($file) : [];
+
+		return vsprintf(array_key_exists($key = md5($text), $phrases) ? $phrases[$key] : $text, $args);
 	}
 }
