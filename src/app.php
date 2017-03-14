@@ -3,7 +3,6 @@ namespace Ellipsis;
 
 use Corpus\App as Base;
 use Corpus\Config;
-use Corpus\Db;
 use GuzzleHttp\Client;
 
 /**
@@ -25,7 +24,7 @@ class App extends Base {
 				return new Client(Config::get('http'));
 			},
 		    'db' => function() {
-				return new \Ellipsis\DB(new DB(Config::get('db.{default}')));
+			    return new DB(new \Corpus\DB(Config::get('db.{default}')));
 		    }
 		], $options));
 	}
