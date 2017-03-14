@@ -29,7 +29,8 @@ abstract class Facebook {
 
 		$image = $auth->http->get(
 			"https://graph.facebook.com/me/picture" .
-			"?type=square" .
+			"?width=200".
+			"&height=200" .
 			"&access_token={$token}")->getBody()->getContents();
 
 		if ( $id = $auth->account('facebook', $user['id']) )
