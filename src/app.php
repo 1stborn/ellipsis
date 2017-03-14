@@ -23,7 +23,10 @@ class App extends Base {
 		return parent::run($silent, Config::merge([
 			'http' => function () {
 				return new Client(Config::get('http'));
-			}
+			},
+		    'db' => function() {
+				return new \Ellipsis\DB(new DB(Config::get('db.{default}')));
+		    }
 		], $options));
 	}
 

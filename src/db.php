@@ -8,6 +8,10 @@ class DB {
 		$this->db = $db;
 	}
 
+	public function __get($name) {
+		return property_exists($this, $name) ? $this->{$name} : $this->db->{$name};
+	}
+
 	public function scalar($sql, ...$params) {
 		return $this->db->scalar($sql, $params);
 	}
