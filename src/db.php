@@ -13,10 +13,18 @@ class DB {
 	}
 
 	public function scalar($sql, ...$params) {
+		if ( sizeof($params) == 1 && is_array($params[0])) {
+			$params = $params[0];
+		}
+
 		return $this->db->scalar($sql, $params);
 	}
 
 	public function query($query, ...$params) {
+		if ( sizeof($params) == 1 && is_array($params[0])) {
+			$params = $params[0];
+		}
+
 		return $this->db->query($query, $params);
 	}
 
