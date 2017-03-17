@@ -9,8 +9,6 @@ abstract class Facebook {
 		'id',
 		'first_name',
 		'last_name',
-		'locale',
-		'timezone',
 		'email'
 	];
 
@@ -33,20 +31,14 @@ abstract class Facebook {
 			"&height=200" .
 			"&access_token={$token}")->getBody()->getContents();
 
-		if ( $id = $auth->account('facebook', $user['id']) )
-			$auth->authorize($id);
-		else
+		$auth->authorize($user['id'], 'facebook') or
 			$auth->create($user['id'], 'facebook');
 
-		$data = [
-			'first_name' => $user['first_name'],
-			'last_name'  => $user['last_name'],
-			'email'      => $user['email'],
-		];
+        $auth->upload($image);
 
-		if ( $name = $auth->upload($image) )
-			$data['picture'] = $name;
-
-		$auth->set($data);
+		$auth->set([
+            'first_name' => $user['first_name'],
+            'last_name'  => $user['last_name'],
+        ]);
 	}
 }

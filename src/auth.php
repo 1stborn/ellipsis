@@ -15,11 +15,8 @@ use GuzzleHttp\Client;
  * @package Ellipsis
  */
 abstract class Auth extends Di {
-	abstract protected function save($data);
-
-	abstract public function create($id, $provider);
-
-	abstract public function account($id, $provider);
+    abstract public function authorize($key, $provider);
+	abstract public function create($key, $provider);
 
 	public function valid() {
 		return (bool)$this->session->user;
@@ -45,29 +42,16 @@ abstract class Auth extends Di {
 	}
 
 	public function upload($image) {
-		if ( $this->valid() ) {
-			$id = $this->session->user['id'];
-
-			if ( $info = getimagesizefromstring($image) ) {
-				switch ($info[2]) {
-					case IMAGETYPE_JPEG:
-					case IMAGETYPE_JPEG2000:
-						$name = $id . '.jpg';
-					break;
-					case IMAGETYPE_GIF:
-						$name = $id . '.gif';
-					break;
-					case IMAGETYPE_PNG:
-						$name = $id . '.png';
-					break;
-					default:
-						$name = $id;
-				}
-
-				return file_put_contents(
-					Config::get('settings.public.images') . $name, $image
-				) ? $name : false;
-			}
+		if ( $id = $this->get('id') ) {
+		    $name = Config::get('settings.public.images') . $id . '.jpg';
+                if (function_exists('imagejpeg')) {
+                    return imagejpeg(imagecreatefromstring(file_get_contents($image)),$name, 100);
+                } else if (class_exists('Imagick')) {
+                    $imagick = new \Imagick($image);
+                    $imagick->setImageFormat('jpeg');
+                    $imagick->setCompressionQuality(100);
+                    file_put_contents($name, $imagick);
+                }
 		}
 
 		return false;
