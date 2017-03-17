@@ -15,7 +15,7 @@ use GuzzleHttp\Client;
  * @package Ellipsis
  */
 abstract class Auth extends Di {
-    abstract public function authorize($key, $provider);
+	abstract public function authorize($key, $provider);
 	abstract public function create($key, $provider);
 
 	public function valid() {
@@ -27,14 +27,7 @@ abstract class Auth extends Di {
 	}
 
 	public function set($name, $value = null) {
-		if ( is_array($name) ) {
-			$this->session->user = Config::merge($this->session->user ?? [], $name);
-			$this->save($name);
-		}
-		else {
-			$this->session->user = Config::merge($this->session->user ?? [], [$name =>$value]);
-			$this->save([$name => $value]);
-		}
+		return $this->session->user = Config::merge($this->session->user ?? [], is_array($name) ? $name : [$name =>$value]);
 	}
 
 	public function logout() {
@@ -43,22 +36,17 @@ abstract class Auth extends Di {
 
 	public function upload($image) {
 		if ( $id = $this->get('id') ) {
-		    $name = Config::get('settings.public.images') . $id . '.jpg';
-                if (function_exists('imagejpeg')) {
-                    return imagejpeg(imagecreatefromstring(file_get_contents($image)),$name, 100);
-                } else if (class_exists('Imagick')) {
-                    $imagick = new \Imagick($image);
-                    $imagick->setImageFormat('jpeg');
-                    $imagick->setCompressionQuality(100);
-                    file_put_contents($name, $imagick);
-                }
+			$name = Config::get('settings.public.images') . $id . '.jpg';
+			if (function_exists('imagejpeg')) {
+				return imagejpeg(imagecreatefromstring(file_get_contents($image)),$name, 100);
+			} else if (class_exists('Imagick')) {
+				$imagick = new \Imagick($image);
+				$imagick->setImageFormat('jpeg');
+				$imagick->setCompressionQuality(100);
+				file_put_contents($name, $imagick);
+			}
 		}
 
 		return false;
-	}
-
-	public function authorize($data) {
-
-		$this->session->user = $data;
 	}
 }
