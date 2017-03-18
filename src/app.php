@@ -12,7 +12,6 @@ use GuzzleHttp\Client;
  *
  * @property Db     db
  * @property Client http
- * @property Auth   auth
  */
 class App extends Base {
 	protected $language;

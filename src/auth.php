@@ -27,7 +27,12 @@ abstract class Auth extends Di {
 	}
 
 	public function set($name, $value = null) {
-		return $this->session->user = Config::merge($this->session->user ?? [], is_array($name) ? $name : [$name =>$value]);
+		if ( $name ) {
+			return $this->session->user =
+				Config::merge($this->session->user ?? [], is_array($name) ? $name : [$name => $value]);
+		}
+
+		return false;
 	}
 
 	public function logout() {
