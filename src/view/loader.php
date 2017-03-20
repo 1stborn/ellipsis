@@ -39,6 +39,8 @@ class Loader extends Di implements \Twig_LoaderInterface {
 
 	private function obtain($value, $name, $exec = 'scalar', $default = null) {
 		static $cache = [];
+		$name = str_replace('\\', '/', $name);
+
 		if ( !array_key_exists($key = $value . '_' . $name, $cache) )
 			$cache[$key] = $this->db->$exec(
 				"SELECT {$value} FROM pages WHERE path = :path", ['path' => $name]

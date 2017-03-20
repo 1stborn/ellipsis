@@ -20,6 +20,14 @@ class DB {
 		return $this->db->scalar($sql, $params);
 	}
 
+	public function current($sql, ...$params) {
+		if ( sizeof($params) == 1 && is_array($params[0])) {
+			$params = $params[0];
+		}
+
+		return $this->db->current($sql, $params);
+	}
+
 	public function query($query, ...$params) {
 		if ( sizeof($params) == 1 && is_array($params[0])) {
 			$params = $params[0];
