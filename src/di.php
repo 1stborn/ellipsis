@@ -7,7 +7,7 @@ abstract class Di {
 	/**
 	 * @var ContainerInterface
 	 */
-	private $ci;
+	protected $ci;
 
 	public function __construct(ContainerInterface $ci) {
 		$this->ci = $ci;

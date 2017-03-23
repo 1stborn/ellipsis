@@ -45,7 +45,8 @@ abstract class Auth extends Di {
 			if (function_exists('imagejpeg')) {
 				return imagejpeg(imagecreatefromstring(file_get_contents($image)),$name, 100);
 			} else if (class_exists('Imagick')) {
-				$imagick = new \Imagick($image);
+				$imagick = new \Imagick();
+				$imagick->readImageBlob($image);
 				$imagick->setImageFormat('jpeg');
 				$imagick->setCompressionQuality(100);
 				file_put_contents($name, $imagick);
