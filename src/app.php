@@ -33,8 +33,25 @@ class App extends Base {
 
 		if ( $this->language = $this->getRequest()->getAttribute('language') )
 			$this->session->language = $this->language;
-		else
+		else if ( $languages = $this->getRequest()->getHeader('Accept-Language') ) {
+			$variants = [];
+			foreach ( explode(';', $languages[0]) as $language ) {
+				if ( preg_match('~^(?:q=([0-9.]+),)?([a-z]{2})~iu', $language, $m) ) {
+					if ( in_array($m[2], Config::get("language.available")) ) {
+						$variants[$m[2]] = $m[1] ?: 1;
+					}
+				}
+			}
+
+			if ( $variants ) {
+				arsort($variants);
+				$this->language = $this->session->language = key($variants);
+			}
+		}
+
+		if ( !$this->language ) {
 			$this->language = $this->session->language = Config::get('language.default');
+		}
 
 		$this->view->addFunction(new \Twig_SimpleFunction('config', function ($name) {
 			return Config::get($name);
