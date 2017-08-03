@@ -40,8 +40,8 @@ class App extends Base {
 			return Config::get($name);
 		}));
 
-		$this->view->addFilter(new \Twig_SimpleFilter('intl', function ($text, array $args = []) {
-			return call_user_func_array([$this, 'translate'], array_merge([$text], $args));
+		$this->view->addFilter(new \Twig_SimpleFilter('intl', function ($tag, $text, array $args = []) {
+			return call_user_func_array([$this, 'translate'], array_merge([$tag, $text], $args));
 		}, ['is_variadic' => true]));
 
 		$this->assign([
@@ -52,13 +52,13 @@ class App extends Base {
 		]);
 	}
 
-	public function translate($text, ...$args) {
+	public function translate($tag, $text, ...$args) {
 		static $phrases;
 
 		if ( !isset($phrases) )
 			$phrases = file_exists($file = APP_DIR . '/languages/' . $this->language . '.ini')
 				? parse_ini_file($file) : [];
 
-		return vsprintf(array_key_exists($key = md5($text), $phrases) ? $phrases[$key] : $text, $args);
+		return vsprintf(array_key_exists($tag, $phrases) ? $phrases[$tag] : $text, $args);
 	}
 }
